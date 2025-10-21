@@ -1,0 +1,522 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>AI Video Shareouts · Shane Hawkins</title>
+  <meta name="description" content="A fast, minimal showcase for AI video experiments, storyboards, and cinemagraphs." />
+  <meta name="theme-color" content="#0f1115" />
+
+  <!-- Open Graph / Twitter -->
+  <meta property="og:title" content="AI Video Shareouts · Shane Hawkins" />
+  <meta property="og:description" content="A fast, minimal showcase for AI video experiments, storyboards, and cinemagraphs." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://<username>.github.io/<repo>/" />
+  <meta property="og:image" content="https://<username>.github.io/<repo>/cover.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <style>
+    :root{
+      --bg: #0f1115;
+      --bg-elev: #171a21;
+      --text: #e7eaf0;
+      --muted: #a9b0bf;
+      --brand: #6be675; /* tweak to taste */
+      --accent: #8bb4ff;
+      --card: #12151b;
+      --ring: rgba(139,180,255,.35);
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 14px;
+      --radius-sm: 10px;
+    }
+    @media (prefers-color-scheme: light) {
+      :root{
+        --bg: #ffffff;
+        --bg-elev: #f3f5f9;
+        --text: #1b1f2a;
+        --muted: #5c6375;
+        --brand: #2aa84a;
+        --accent: #2b69ff;
+        --card: #ffffff;
+        --ring: rgba(43,105,255,.25);
+        --shadow: 0 8px 24px rgba(0,0,0,.08);
+      }
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;background:var(--bg);color:var(--text);font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif}
+    a{color:var(--accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{max-width:1200px;margin-inline:auto;padding:28px}
+    header{
+      position:sticky; top:0; z-index:10;
+      backdrop-filter:saturate(1.2) blur(10px);
+      background: color-mix(in oklab, var(--bg) 86%, transparent);
+      border-bottom:1px solid color-mix(in oklab, var(--text) 12%, transparent);
+    }
+    <!doctype html>
+    <html lang="en">
+    <head>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+      <title>AI Video Shareouts · Shane Hawkins</title>
+      <meta name="description" content="A fast, minimal showcase for AI video experiments, storyboards, and cinemagraphs." />
+      <meta name="theme-color" content="#0f1115" />
+
+      <!-- Open Graph / Twitter -->
+      <meta property="og:title" content="AI Video Shareouts · Shane Hawkins" />
+      <meta property="og:description" content="A fast, minimal showcase for AI video experiments, storyboards, and cinemagraphs." />
+      <meta property="og:type" content="website" />
+      <meta property="og:url" content="https://<username>.github.io/<repo>/" />
+      <meta property="og:image" content="https://<username>.github.io/<repo>/cover.jpg" />
+      <meta name="twitter:card" content="summary_large_image" />
+
+      <style>
+        :root{
+          --bg: #0f1115;
+          --bg-elev: #171a21;
+          --text: #e7eaf0;
+          --muted: #a9b0bf;
+          --brand: #6be675; /* tweak to taste */
+          --accent: #8bb4ff;
+          --card: #12151b;
+          --ring: rgba(139,180,255,.35);
+          --shadow: 0 10px 30px rgba(0,0,0,.35);
+          --radius: 14px;
+          --radius-sm: 10px;
+        }
+        @media (prefers-color-scheme: light) {
+          :root{
+            --bg: #ffffff;
+            --bg-elev: #f3f5f9;
+            --text: #1b1f2a;
+            --muted: #5c6375;
+            --brand: #2aa84a;
+            --accent: #2b69ff;
+            --card: #ffffff;
+            --ring: rgba(43,105,255,.25);
+            --shadow: 0 8px 24px rgba(0,0,0,.08);
+          }
+        }
+        *{box-sizing:border-box}
+        html,body{margin:0;background:var(--bg);color:var(--text);font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif}
+        a{color:var(--accent);text-decoration:none}
+        a:hover{text-decoration:underline}
+        .wrap{max-width:1200px;margin-inline:auto;padding:28px}
+        header{
+          position:sticky; top:0; z-index:10;
+          backdrop-filter:saturate(1.2) blur(10px);
+          background: color-mix(in oklab, var(--bg) 86%, transparent);
+          border-bottom:1px solid color-mix(in oklab, var(--text) 12%, transparent);
+        }
+        .bar{display:flex; gap:16px; align-items:center; justify-content:space-between}
+        .brand{display:flex; gap:14px; align-items:center}
+        .dot{width:14px;height:14px;border-radius:50%; background:linear-gradient(135deg, var(--brand), var(--accent))}
+        h1{font-size:20px; margin:0}
+        .tools{display:flex; gap:10px; align-items:center}
+        .btn{
+          display:inline-flex; align-items:center; gap:8px;
+          border:1px solid color-mix(in oklab, var(--text) 16%, transparent);
+          background: var(--bg-elev);
+          color: var(--text); padding:8px 12px; border-radius:10px;
+          box-shadow: var(--shadow); text-decoration:none;
+        }
+        .btn:hover{transform:translateY(-1px)}
+        .btn:focus-visible{outline:3px solid var(--ring); outline-offset:2px}
+
+        /* Search */
+        .search{
+          display:flex; align-items:center; gap:10px;
+          background:var(--bg-elev); border:1px solid color-mix(in oklab, var(--text) 16%, transparent);
+          border-radius:10px; padding:8px 10px; width:min(420px, 44vw);
+        }
+        .search input{
+          background:transparent; border:none; outline:none; color:var(--text);
+          width:100%;
+        }
+        .kbd{font:12px/1.2 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+          color:var(--muted); border:1px solid color-mix(in oklab, var(--text) 16%, transparent);
+          border-radius:6px; padding:.2em .4em;
+        }
+
+        /* Featured */
+        .section{margin:28px auto}
+        .section h2{margin: 0 0 12px 0; font-size:18px; color:var(--muted); font-weight:600}
+        .featured{
+          display:grid; grid-template-columns: 1.2fr .8fr; gap:16px;
+        }
+        @media (max-width: 900px){ .featured{grid-template-columns:1fr} }
+        .panel{
+          background:var(--card); border:1px solid color-mix(in oklab, var(--text) 12%, transparent);
+          border-radius: var(--radius); padding:10px; box-shadow: var(--shadow);
+        }
+        .ratio{
+          position:relative; aspect-ratio:16/9; overflow:hidden; border-radius: var(--radius-sm);
+          background:#000;
+        }
+        .ratio iframe,.ratio video,.ratio img{
+          position:absolute; inset:0; width:100%; height:100%; object-fit:cover; border:0;
+        }
+        .meta{display:flex; flex-direction:column; gap:8px}
+        .tags{display:flex; flex-wrap:wrap; gap:8px}
+        .tag{font-size:12px; padding:4px 8px; border-radius:999px; color:var(--text);
+             background:color-mix(in oklab, var(--accent) 22%, transparent);
+             border:1px solid color-mix(in oklab, var(--text) 16%, transparent);}
+
+        /* Grid */
+        .grid{display:grid; gap:16px; grid-template-columns: repeat(4, 1fr)}
+        @media (max-width: 1100px){ .grid{grid-template-columns: repeat(3, 1fr)} }
+        @media (max-width: 800px){ .grid{grid-template-columns: repeat(2, 1fr)} }
+        @media (max-width: 520px){ .grid{grid-template-columns: 1fr} }
+        .card{
+          background:var(--card); border:1px solid color-mix(in oklab, var(--text) 12%, transparent);
+          border-radius: var(--radius); overflow:hidden; box-shadow: var(--shadow);
+          display:flex; flex-direction:column;
+        }
+        .thumb{aspect-ratio:16/9; background:#000; overflow:hidden}
+        .card .body{padding:10px 12px 12px 12px; display:flex; flex-direction:column; gap:6px}
+        .card h3{margin:.2rem 0; font-size:15px}
+        .card p{margin:0; color:var(--muted); font-size:13px}
+        .card .chips{display:flex; flex-wrap:wrap; gap:6px; margin-top:6px}
+        .chip{font-size:11px; padding:3px 8px; border-radius:999px; background:color-mix(in oklab, var(--accent) 16%, transparent); color:var(--text);}
+      </style>
+    </head>
+    <body>
+      <header>
+        <div class="wrap bar">
+          <div class="brand">
+            <div class="dot" aria-hidden></div>
+            <h1>AI Video Shareouts</h1>
+          </div>
+          <div class="tools">
+            <nav class="search" role="search" aria-label="Search videos">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
+                <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <circle cx="11" cy="11" r="6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></circle>
+              </svg>
+              <input placeholder="Search" aria-label="Search" />
+              <div class="kbd">/</div>
+            </nav>
+            <a class="btn" href="#">Share</a>
+          </div>
+        </div>
+      </header>
+
+      <main class="wrap">
+        <section class="section featured">
+          <div class="panel">
+            <div class="ratio">
+              <img src="cover.jpg" alt="Featured cover" />
+            </div>
+            <div class="meta">
+              <h2>Featured</h2>
+              <p class="tags"><span class="tag">cinemagraph</span><span class="tag">storyboard</span></p>
+              <p class="muted">Short description of the featured project.</p>
+            </div>
+          </div>
+
+          <aside class="panel">
+            <h3>Latest</h3>
+            <p class="muted">A quick note about the most recent experiments.</p>
+          </aside>
+        </section>
+
+        <section class="section">
+          <h2>All Projects</h2>
+          <div class="grid">
+            <article class="card">
+              <div class="thumb">
+                <img src="thumb1.jpg" alt="thumbnail" />
+              </div>
+              <div class="body">
+                <h3>Project One</h3>
+                <p>A short blurb about project one.</p>
+                <div class="chips"><span class="chip">ai</span><span class="chip">video</span></div>
+              </div>
+            </article>
+
+            <article class="card">
+              <div class="thumb">
+                <img src="thumb2.jpg" alt="thumbnail" />
+              </div>
+              <div class="body">
+                <h3>Project Two</h3>
+                <p>A short blurb about project two.</p>
+                <div class="chips"><span class="chip">experiment</span><span class="chip">cinemagraph</span></div>
+              </div>
+            </article>
+
+            <article class="card">
+              <div class="thumb">
+                <img src="thumb3.jpg" alt="thumbnail" />
+              </div>
+              <div class="body">
+                <h3>Project Three</h3>
+                <p>A short blurb about project three.</p>
+                <div class="chips"><span class="chip">storyboard</span><span class="chip">loop</span></div>
+              </div>
+            </article>
+
+          </div>
+        </section>
+
+        <footer style="margin-top:32px;color:var(--muted);font-size:13px">
+          © Shane Hawkins
+        </footer>
+      </main>
+    </body>
+    </html>
+    const THEME_KEY = "ai_shareouts_theme";
+    function applyTheme(t){
+      root.setAttribute("data-theme", t);
+      const scheme = t === "light" ? "light" : "dark";
+      document.querySelector('meta[name="theme-color"]').setAttribute('content', scheme === 'dark' ? '#0f1115' : '#ffffff');
+    }
+    function initTheme(){
+      const saved = localStorage.getItem(THEME_KEY);
+      if(saved){ applyTheme(saved); return; }
+      const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+      applyTheme(prefersLight ? "light" : "dark");
+    }
+    function toggleTheme(){
+      const next = root.getAttribute("data-theme") === "light" ? "dark" : "light";
+      localStorage.setItem(THEME_KEY, next);
+      applyTheme(next);
+    }
+
+    // ========= Featured Player =========
+    function mountPlayer(el, {type, src, autoplay=false, muted=true, controls=true}){
+      el.innerHTML = "";
+      if(type === "youtube"){
+        const iframe = document.createElement("iframe");
+        iframe.loading = "lazy";
+        iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+        iframe.referrerPolicy = "strict-origin-when-cross-origin";
+        iframe.allowFullscreen = true;
+        const params = new URLSearchParams({
+          rel: 0, modestbranding: 1, playsinline: 1,
+          autoplay: autoplay ? 1 : 0, mute: muted ? 1 : 0, controls: controls ? 1 : 0
+        });
+        iframe.src = `https://www.youtube.com/embed/${src}?${params.toString()}`;
+        el.appendChild(iframe);
+      } else if(type === "mp4"){
+        const vid = document.createElement("video");
+        vid.src = src;
+        vid.playsInline = true;
+        vid.muted = muted;
+        vid.autoplay = autoplay;
+        vid.controls = controls;
+        vid.loop = true;
+        vid.preload = "metadata";
+        el.appendChild(vid);
+      } else if(type === "image"){
+        const img = document.createElement("img");
+        img.src = src;
+        img.alt = "Image";
+        el.appendChild(img);
+      }
+    }
+
+    // ========= Cards =========
+    function renderCards(items){
+      const wrap = $("#cards");
+      wrap.innerHTML = "";
+      for(const it of items){
+        const card = document.createElement("article");
+        card.className = "card";
+        card.dataset.tags = (it.tags||[]).join(" ").toLowerCase();
+        card.dataset.title = it.title.toLowerCase();
+        card.dataset.date = it.date || "";
+
+        const thumb = document.createElement("div");
+        thumb.className = "thumb";
+        const img = document.createElement("img");
+        img.src = it.thumb || "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='640' height='360'><rect width='100%' height='100%' fill='%23000'/></svg>";
+        img.alt = it.title;
+        img.loading = "lazy";
+        img.decoding = "async";
+        img.style.width = "100%";
+        img.style.height = "100%";
+        img.style.objectFit = "cover";
+        thumb.appendChild(img);
+
+        const body = document.createElement("div");
+        body.className = "body";
+        const h3 = document.createElement("h3"); h3.textContent = it.title;
+        const p  = document.createElement("p");  p.textContent = it.desc || "";
+        const chips = document.createElement("div"); chips.className = "chips";
+        (it.tags||[]).forEach(t=>{
+          const s = document.createElement("span");
+          s.className = "chip"; s.textContent = t;
+          chips.appendChild(s);
+        });
+
+        body.append(h3, p, chips);
+
+        // click -> modal
+        const hit = document.createElement("a");
+        hit.href = "#viewer";
+        hit.className = "stretch";
+        hit.addEventListener("click", (e)=>{
+          e.preventDefault();
+          openViewer(it);
+        });
+
+        card.append(thumb, body, hit);
+        wrap.appendChild(card);
+      }
+    }
+
+    // ========= Modal viewer =========
+    const dialog = $("#viewer");
+    const viewerTitle = $("#viewerTitle");
+    const viewerMeta  = $("#viewerMeta");
+    const viewerPlayer = $("#viewerPlayer");
+    function openViewer(it){
+      viewerTitle.textContent = it.title;
+      viewerMeta.textContent = [it.date, ...(it.tags||[])].filter(Boolean).join(" · ");
+      mountPlayer(viewerPlayer, {type: it.type, src: it.src, autoplay:true, muted:true, controls:true});
+      dialog.showModal();
+    }
+    $(".close", dialog).addEventListener("click", ()=> dialog.close());
+    dialog.addEventListener("close", ()=> { viewerPlayer.innerHTML = ""; });
+    window.addEventListener("keydown", (e)=>{
+      if(e.key === "Escape" && dialog.open){ dialog.close(); }
+    });
+
+    // ========= Search / Filter =========
+    const q = $("#q");
+    function filter(){
+      const term = (q.value||"").trim().toLowerCase();
+      for(const card of $$(".card")){
+        const hay = (card.dataset.title + " " + card.dataset.tags).trim();
+        card.style.display = hay.includes(term) ? "" : "none";
+      }
+    }
+    q.addEventListener("input", filter);
+    window.addEventListener("keydown", (e)=>{
+      if(e.key === "/" && document.activeElement !== q){
+        e.preventDefault();
+        q.focus();
+      } else if(e.key === "Escape" && document.activeElement === q){
+        q.value = ""; filter();
+        q.blur();
+      } else if(e.key.toLowerCase() === "f" && !dialog.open){
+        toggleTheme();
+      }
+    });
+
+    // ========= Boot =========
+    (function(){
+      initTheme();
+      $("#yr").textContent = new Date().getFullYear();
+
+      // Featured player from data-type
+      const fp = $("#featuredPlayer");
+      const dataType = fp.dataset.type; // "youtube" or "mp4"
+      const ytId = fp.dataset.id;
+      const mp4 = fp.dataset.mp4;
+      const src = dataType === "youtube" ? ytId : mp4;
+      mountPlayer(fp, {type: dataType, src, autoplay:false, muted:true, controls:true});
+
+      // Load items
+      const data = JSON.parse($("#video-data").textContent);
+      // Sort newest first
+      data.items.sort((a,b)=> (b.date||"").localeCompare(a.date||""));
+      renderCards(data.items);
+
+      // Theme button
+      $("#themeBtn").addEventListener("click", toggleTheme);
+    })();
+  </script>
+=======
+    .chip{font-size:11px; padding:3px 8px; border-radius:999px; background:color-mix(in oklab, var(--accent) 16%, transparent); color:var(--text);}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap bar">
+      <div class="brand">
+        <div class="dot" aria-hidden></div>
+        <h1>AI Video Shareouts</h1>
+      </div>
+      <div class="tools">
+        <nav class="search" role="search" aria-label="Search videos">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
+            <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+            <circle cx="11" cy="11" r="6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></circle>
+          </svg>
+          <input placeholder="Search" aria-label="Search" />
+          <div class="kbd">/</div>
+        </nav>
+        <a class="btn" href="#">Share</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="section featured">
+      <div class="panel">
+        <div class="ratio">
+          <img src="cover.jpg" alt="Featured cover" />
+        </div>
+        <div class="meta">
+          <h2>Featured</h2>
+          <p class="tags"><span class="tag">cinemagraph</span><span class="tag">storyboard</span></p>
+          <p class="muted">Short description of the featured project.</p>
+        </div>
+      </div>
+
+      <aside class="panel">
+        <h3>Latest</h3>
+        <p class="muted">A quick note about the most recent experiments.</p>
+      </aside>
+    </section>
+
+    <section class="section">
+      <h2>All Projects</h2>
+      <div class="grid">
+        <article class="card">
+          <div class="thumb">
+            <img src="thumb1.jpg" alt="thumbnail" />
+          </div>
+          <div class="body">
+            <h3>Project One</h3>
+            <p>A short blurb about project one.</p>
+            <div class="chips"><span class="chip">ai</span><span class="chip">video</span></div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="thumb">
+            <img src="thumb2.jpg" alt="thumbnail" />
+          </div>
+          <div class="body">
+            <h3>Project Two</h3>
+            <p>A short blurb about project two.</p>
+            <div class="chips"><span class="chip">experiment</span><span class="chip">cinemagraph</span></div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="thumb">
+            <img src="thumb3.jpg" alt="thumbnail" />
+          </div>
+          <div class="body">
+            <h3>Project Three</h3>
+            <p>A short blurb about project three.</p>
+            <div class="chips"><span class="chip">storyboard</span><span class="chip">loop</span></div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <footer style="margin-top:32px;color:var(--muted);font-size:13px">
+      © Shane Hawkins
+    </footer>
+  </main>
+>>>>>>> 19ef7c2 (Fix: add corrected index.html and remove misspelled inidex.html):index.html
+</body>
+</html>
