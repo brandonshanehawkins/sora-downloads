@@ -1,71 +1,84 @@
-
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html>
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>AI Video Shareouts · Shane Hawkins</title>
-  <meta name="description" content="AI Video Shareouts by Shane Hawkins" />
-  <style>
-    :root { --bg:#0b0c10; --fg:#e6e6e6; --muted:#9aa0a6; --accent:#6ee7ff; --card:#15171c; }
-    * { box-sizing: border-box; }
-    html, body { margin:0; padding:0; background:var(--bg); color:var(--fg); font:16px/1.55 system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
-    a { color: var(--accent); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    header, main, footer { max-width: 960px; margin: 0 auto; padding: 24px; }
-    header h1 { margin: 0 0 4px; font-size: clamp(22px, 3vw, 32px); }
-    header h2 { margin: 0; font-weight: 500; color: var(--muted); }
-    .card { background: var(--card); border: 1px solid #22262e; border-radius: 10px; padding: 16px; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
-    .btn { display: inline-block; padding: 10px 14px; border-radius: 8px; background: var(--accent); color: #002733; font-weight: 600; }
-    .tag { display:inline-block; margin-right:8px; padding:2px 8px; border-radius:999px; background:#1f232b; color:#cbd5e1; font-size:12px; }
-    footer { color: var(--muted); font-size: 14px; text-align:center; }
-    kbd { background:#1f232b; padding:2px 6px; border-radius:4px; border:1px solid #343a46; font-size:12px; }
-  </style>
+    <title>MP4 Files Index</title>
+    <style>
+        body { font-family: sans-serif; margin: 40px; }
+        .video-list { list-style: none; padding: 0; }
+        .video-list li { margin-bottom: 20px; border: 1px solid #ccc; padding: 15px; border-radius: 5px; }
+        .video-list li a { font-weight: bold; text-decoration: none; color: #007bff; display: block; margin-bottom: 5px; }
+        .video-list li a:hover { text-decoration: underline; }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>AI Video Shareouts · Shane Hawkins</h1>
-    <h2>Esc Theme <a href="https://github.com/USERNAME/RE></h2>
-  </header>
 
-  <main>
-    <section class="card">
-      <h3>Featured</h3>
-      <h4>Looping cinemagraph test – <span class="tag">[truck]</span> <span class="tag">[rtl↔]</span></h4>
-      <p>Veo 3.1 → composited depth blur + grain. Morph‑like cut between frames; tokenized prompt scaffold.</p>
-      <p>
-        <span class="tag">#veo</span>
-        <span class="tag">#cinemagraph</span>
-        <span class="tag">#workflow</span>
-      </p>
-      <p>
-        https://youtu.be/YOUTUBE_VIDEO_IDOpen on YouTube</a>
-      </p>
-    </section>
+    <h1>MP4 Repository Contents</h1>
+    <ul id="video-list" class="video-list">
+        </ul>
+    <p id="loading">Loading files...</p>
+    <p id="error-message" style="color: red; display: none;">Error loading files. Check your repository name and user/org, or try again later.</p>
 
-    <h3 id="grid" style="margin-top:24px;">Library</h3>
-    <div class="grid">
-      <!-- Example card; duplicate for more items -->
-      <article class="card">
-        <h4>Title</h4>
-        <p>Short description of the piece.</p>
-        <p>#View</a></p>
-      </article>
-    </div>
-  </main>
+    <script>
+        // *** REPLACE THESE VALUES ***
+        const GITHUB_USER = 'brandonshanehawkins'; // e.g., 'octocat'
+        const GITHUB_REPO = 'sora-downloads'; // e.g., 'video-repo'
+        const GITHUB_BRANCH = 'main'; // or 'master', or your Pages branch
 
-  <footer>
-    Title × © Shane Hawkins · Built for GitHub Pages · Press <kbd>F</kbd> to toggle theme, <kbd>/</kbd> to search.
-  </footer>
+        const API_URL = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/`;
+        const FILES_CONTAINER = document.getElementById('video-list');
+        const LOADING_MESSAGE = document.getElementById('loading');
+        const ERROR_MESSAGE = document.getElementById('error-message');
 
-  <!-- Optional: tiny JS for keyboard hints (no frameworks) -->
-  <script>
-    // Placeholder keyboard hint listeners (no-op)
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'F') { /* toggle theme here */ }
-      if (e.key === '/') { /* open search here */ }
-    });
-  </script>
+        async function listMp4Files() {
+            try {
+                // Fetch the contents of the root directory
+                const response = await fetch(API_URL);
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.message || 'Failed to fetch repository contents.');
+                }
+                
+                // Filter and display MP4 files
+                const mp4Files = data.filter(file => file.type === 'file' && file.name.endsWith('.mp4'));
+
+                if (mp4Files.length === 0) {
+                    FILES_CONTAINER.innerHTML = '<li>No MP4 files found in the root directory.</li>';
+                } else {
+                    mp4Files.forEach(file => {
+                        const fileURL = `https://${GITHUB_USER}.github.io/${GITHUB_REPO}/${file.path}`;
+                        
+                        const listItem = document.createElement('li');
+                        
+                        // Link to the video file
+                        const link = document.createElement('a');
+                        link.href = fileURL;
+                        link.textContent = file.name;
+                        listItem.appendChild(link);
+                        
+                        // Optional: Embed a simple video player for direct playback
+                        const video = document.createElement('video');
+                        video.src = fileURL;
+                        video.controls = true;
+                        video.style.maxWidth = '100%';
+                        video.style.marginTop = '10px';
+                        video.style.height = 'auto';
+                        listItem.appendChild(video);
+                        
+                        FILES_CONTAINER.appendChild(listItem);
+                    });
+                }
+            } catch (error) {
+                console.error('Error listing files:', error);
+                ERROR_MESSAGE.style.display = 'block';
+                FILES_CONTAINER.innerHTML = ''; // Clear the list
+            } finally {
+                LOADING_MESSAGE.style.display = 'none'; // Hide loading message
+            }
+        }
+
+        listMp4Files();
+    </script>
+
 </body>
 </html>
