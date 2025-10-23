@@ -1,0 +1,71 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI Video Shareouts · Shane Hawkins</title>
+  <meta name="description" content="AI Video Shareouts by Shane Hawkins" />
+  <style>
+    :root { --bg:#0b0c10; --fg:#e6e6e6; --muted:#9aa0a6; --accent:#6ee7ff; --card:#15171c; }
+    * { box-sizing: border-box; }
+    html, body { margin:0; padding:0; background:var(--bg); color:var(--fg); font:16px/1.55 system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    header, main, footer { max-width: 960px; margin: 0 auto; padding: 24px; }
+    header h1 { margin: 0 0 4px; font-size: clamp(22px, 3vw, 32px); }
+    header h2 { margin: 0; font-weight: 500; color: var(--muted); }
+    .card { background: var(--card); border: 1px solid #22262e; border-radius: 10px; padding: 16px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+    .btn { display: inline-block; padding: 10px 14px; border-radius: 8px; background: var(--accent); color: #002733; font-weight: 600; }
+    .tag { display:inline-block; margin-right:8px; padding:2px 8px; border-radius:999px; background:#1f232b; color:#cbd5e1; font-size:12px; }
+    footer { color: var(--muted); font-size: 14px; text-align:center; }
+    kbd { background:#1f232b; padding:2px 6px; border-radius:4px; border:1px solid #343a46; font-size:12px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>AI Video Shareouts · Shane Hawkins</h1>
+    <h2>Esc Theme <a href="https://github.com/USERNAME/RE></h2>
+  </header>
+
+  <main>
+    <section class="card">
+      <h3>Featured</h3>
+      <h4>Looping cinemagraph test – <span class="tag">[truck]</span> <span class="tag">[rtl↔]</span></h4>
+      <p>Veo 3.1 → composited depth blur + grain. Morph‑like cut between frames; tokenized prompt scaffold.</p>
+      <p>
+        <span class="tag">#veo</span>
+        <span class="tag">#cinemagraph</span>
+        <span class="tag">#workflow</span>
+      </p>
+      <p>
+        https://youtu.be/YOUTUBE_VIDEO_IDOpen on YouTube</a>
+      </p>
+    </section>
+
+    <h3 id="grid" style="margin-top:24px;">Library</h3>
+    <div class="grid">
+      <!-- Example card; duplicate for more items -->
+      <article class="card">
+        <h4>Title</h4>
+        <p>Short description of the piece.</p>
+        <p>#View</a></p>
+      </article>
+    </div>
+  </main>
+
+  <footer>
+    Title × © Shane Hawkins · Built for GitHub Pages · Press <kbd>F</kbd> to toggle theme, <kbd>/</kbd> to search.
+  </footer>
+
+  <!-- Optional: tiny JS for keyboard hints (no frameworks) -->
+  <script>
+    // Placeholder keyboard hint listeners (no-op)
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'F') { /* toggle theme here */ }
+      if (e.key === '/') { /* open search here */ }
+    });
+  </script>
+</body>
+</html>
