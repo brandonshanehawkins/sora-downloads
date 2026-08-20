@@ -1,84 +1,327 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>MP4 Files Index</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sora Asset Library</title>
     <style>
-        body { font-family: sans-serif; margin: 40px; }
-        .video-list { list-style: none; padding: 0; }
-        .video-list li { margin-bottom: 20px; border: 1px solid #ccc; padding: 15px; border-radius: 5px; }
-        .video-list li a { font-weight: bold; text-decoration: none; color: #007bff; display: block; margin-bottom: 5px; }
-        .video-list li a:hover { text-decoration: underline; }
+        :root {
+            color-scheme: dark;
+            font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+            background: #10131a;
+            color: #f2f5f9;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-width: 320px;
+        }
+
+        .page {
+            width: min(1440px, calc(100% - 48px));
+            margin: 0 auto;
+            padding: 56px 0;
+        }
+
+        .eyebrow {
+            margin: 0 0 8px;
+            color: #8fb9ff;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            letter-spacing: -0.04em;
+        }
+
+        .intro {
+            max-width: 56ch;
+            margin: 16px 0 32px;
+            color: #b7c0cd;
+            line-height: 1.6;
+        }
+
+        .toolbar {
+            display: flex;
+            align-items: end;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .folder-picker {
+            display: grid;
+            gap: 8px;
+            min-width: min(100%, 320px);
+        }
+
+        label {
+            color: #b7c0cd;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        select {
+            width: 100%;
+            appearance: none;
+            border: 1px solid #3a4455;
+            border-radius: 10px;
+            padding: 12px 42px 12px 14px;
+            background:
+                linear-gradient(45deg, transparent 50%, #b7c0cd 50%) calc(100% - 19px) 50% / 6px 6px no-repeat,
+                linear-gradient(135deg, #b7c0cd 50%, transparent 50%) calc(100% - 13px) 50% / 6px 6px no-repeat,
+                #1a202b;
+            color: inherit;
+            font: inherit;
+        }
+
+        select:focus-visible,
+        a:focus-visible {
+            outline: 3px solid #8fb9ff;
+            outline-offset: 3px;
+        }
+
+        .status {
+            margin: 0 0 20px;
+            color: #b7c0cd;
+        }
+
+        .error {
+            color: #ffada7;
+        }
+
+        .asset-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 20px;
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+
+        .asset-card {
+            overflow: hidden;
+            border: 1px solid #303a49;
+            border-radius: 14px;
+            background: #1a202b;
+            box-shadow: 0 12px 30px rgb(0 0 0 / 16%);
+        }
+
+        video {
+            display: block;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background: #080a0e;
+        }
+
+        .asset-details {
+            padding: 14px;
+        }
+
+        .asset-link {
+            color: #f2f5f9;
+            font-weight: 700;
+            line-height: 1.4;
+            overflow-wrap: anywhere;
+        }
+
+        .asset-link:hover {
+            color: #8fb9ff;
+        }
+
+        .empty {
+            grid-column: 1 / -1;
+            padding: 40px;
+            border: 1px dashed #3a4455;
+            border-radius: 14px;
+            color: #b7c0cd;
+            text-align: center;
+        }
+
+        @media (max-width: 640px) {
+            .page {
+                width: min(100% - 32px, 1440px);
+                padding: 32px 0;
+            }
+
+            .toolbar {
+                align-items: stretch;
+            }
+        }
     </style>
 </head>
 <body>
+    <main class="page">
+        <p class="eyebrow">Sora Downloads</p>
+        <h1>Asset library</h1>
+        <p class="intro">Browse generated video assets by project folder and play them directly from the repository.</p>
 
-    <h1>MP4 Repository Contents</h1>
-    <ul id="video-list" class="video-list">
-        </ul>
-    <p id="loading">Loading files...</p>
-    <p id="error-message" style="color: red; display: none;">Error loading files. Check your repository name and user/org, or try again later.</p>
+        <div class="toolbar">
+            <div class="folder-picker">
+                <label for="folder-select">Project folder</label>
+                <select id="folder-select" disabled>
+                    <option>Loading folders...</option>
+                </select>
+            </div>
+        </div>
+
+        <p id="status" class="status" role="status" aria-live="polite">Loading folders...</p>
+        <ul id="asset-grid" class="asset-grid" aria-live="polite"></ul>
+    </main>
 
     <script>
-        // *** REPLACE THESE VALUES ***
-        const GITHUB_USER = 'brandonshanehawkins'; // e.g., 'octocat'
-        const GITHUB_REPO = 'sora-downloads'; // e.g., 'video-repo'
-        const GITHUB_BRANCH = 'main'; // or 'master', or your Pages branch
+        const GITHUB_USER = 'brandonshanehawkins';
+        const GITHUB_REPO = 'sora-downloads';
+        const GITHUB_BRANCH = 'main';
+        const DEFAULT_FOLDER = 'chogo';
+        const REPOSITORY_API_URL = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents`;
 
-        const API_URL = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/`;
-        const FILES_CONTAINER = document.getElementById('video-list');
-        const LOADING_MESSAGE = document.getElementById('loading');
-        const ERROR_MESSAGE = document.getElementById('error-message');
+        const folderSelect = document.getElementById('folder-select');
+        const assetGrid = document.getElementById('asset-grid');
+        const status = document.getElementById('status');
 
-        async function listMp4Files() {
+        function repositoryUrl(path = '') {
+            const encodedPath = path
+                .split('/')
+                .filter(Boolean)
+                .map(segment => encodeURIComponent(segment))
+                .join('/');
+            const suffix = encodedPath ? `/${encodedPath}` : '';
+            return `${REPOSITORY_API_URL}${suffix}?ref=${encodeURIComponent(GITHUB_BRANCH)}`;
+        }
+
+        function publicAssetUrl(path) {
+            const encodedPath = path
+                .split('/')
+                .map(segment => encodeURIComponent(segment))
+                .join('/');
+            return `https://${GITHUB_USER}.github.io/${GITHUB_REPO}/${encodedPath}`;
+        }
+
+        async function getRepositoryContents(path = '') {
+            const response = await fetch(repositoryUrl(path));
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || 'Failed to load repository contents.');
+            }
+
+            if (!Array.isArray(data)) {
+                throw new Error('Expected a directory listing from the GitHub API.');
+            }
+
+            return data;
+        }
+
+        function setStatus(message, isError = false) {
+            status.textContent = message;
+            status.classList.toggle('error', isError);
+        }
+
+        function showEmptyState(message) {
+            assetGrid.replaceChildren();
+            const emptyItem = document.createElement('li');
+            emptyItem.className = 'empty';
+            emptyItem.textContent = message;
+            assetGrid.appendChild(emptyItem);
+        }
+
+        function renderAssets(files) {
+            assetGrid.replaceChildren();
+
+            if (files.length === 0) {
+                showEmptyState('No MP4 files were found in this folder.');
+                return;
+            }
+
+            const assetCards = files
+                .sort((first, second) => first.name.localeCompare(second.name))
+                .map(file => {
+                    const fileUrl = publicAssetUrl(file.path);
+                    const card = document.createElement('li');
+                    card.className = 'asset-card';
+
+                    const video = document.createElement('video');
+                    video.src = fileUrl;
+                    video.controls = true;
+                    video.preload = 'metadata';
+                    video.setAttribute('playsinline', '');
+
+                    const details = document.createElement('div');
+                    details.className = 'asset-details';
+
+                    const link = document.createElement('a');
+                    link.className = 'asset-link';
+                    link.href = fileUrl;
+                    link.textContent = file.name;
+
+                    details.append(link);
+                    card.append(video, details);
+                    return card;
+                });
+
+            assetGrid.append(...assetCards);
+        }
+
+        async function loadFolder(folder) {
+            setStatus(`Loading ${folder}...`);
+            assetGrid.replaceChildren();
+
             try {
-                // Fetch the contents of the root directory
-                const response = await fetch(API_URL);
-                const data = await response.json();
-
-                if (!response.ok) {
-                    throw new Error(data.message || 'Failed to fetch repository contents.');
-                }
-                
-                // Filter and display MP4 files
-                const mp4Files = data.filter(file => file.type === 'file' && file.name.endsWith('.mp4'));
-
-                if (mp4Files.length === 0) {
-                    FILES_CONTAINER.innerHTML = '<li>No MP4 files found in the root directory.</li>';
-                } else {
-                    mp4Files.forEach(file => {
-                        const fileURL = `https://${GITHUB_USER}.github.io/${GITHUB_REPO}/${file.path}`;
-                        
-                        const listItem = document.createElement('li');
-                        
-                        // Link to the video file
-                        const link = document.createElement('a');
-                        link.href = fileURL;
-                        link.textContent = file.name;
-                        listItem.appendChild(link);
-                        
-                        // Optional: Embed a simple video player for direct playback
-                        const video = document.createElement('video');
-                        video.src = fileURL;
-                        video.controls = true;
-                        video.style.maxWidth = '100%';
-                        video.style.marginTop = '10px';
-                        video.style.height = 'auto';
-                        listItem.appendChild(video);
-                        
-                        FILES_CONTAINER.appendChild(listItem);
-                    });
-                }
+                const contents = await getRepositoryContents(folder);
+                const videoFiles = contents.filter(file =>
+                    file.type === 'file' && file.name.toLowerCase().endsWith('.mp4')
+                );
+                renderAssets(videoFiles);
+                setStatus(`${videoFiles.length} video${videoFiles.length === 1 ? '' : 's'} in ${folder}.`);
             } catch (error) {
-                console.error('Error listing files:', error);
-                ERROR_MESSAGE.style.display = 'block';
-                FILES_CONTAINER.innerHTML = ''; // Clear the list
-            } finally {
-                LOADING_MESSAGE.style.display = 'none'; // Hide loading message
+                console.error('Error loading folder:', error);
+                showEmptyState('Unable to load this folder.');
+                setStatus(error.message, true);
             }
         }
 
-        listMp4Files();
-    </script>
+        async function loadFolders() {
+            try {
+                const contents = await getRepositoryContents();
+                const folders = contents
+                    .filter(item => item.type === 'dir')
+                    .map(item => item.name)
+                    .sort((first, second) => first.localeCompare(second));
 
+                folderSelect.replaceChildren();
+                folders.forEach(folder => {
+                    const option = document.createElement('option');
+                    option.value = folder;
+                    option.textContent = folder;
+                    folderSelect.appendChild(option);
+                });
+
+                const initialFolder = folders.includes(DEFAULT_FOLDER) ? DEFAULT_FOLDER : folders[0];
+                if (!initialFolder) {
+                    throw new Error('No project folders were found.');
+                }
+
+                folderSelect.value = initialFolder;
+                folderSelect.disabled = false;
+                await loadFolder(initialFolder);
+            } catch (error) {
+                console.error('Error loading folders:', error);
+                folderSelect.replaceChildren(new Option('Unable to load folders'));
+                showEmptyState('Unable to load project folders.');
+                setStatus(error.message, true);
+            }
+        }
+
+        folderSelect.addEventListener('change', event => loadFolder(event.target.value));
+        loadFolders();
+    </script>
 </body>
 </html>
